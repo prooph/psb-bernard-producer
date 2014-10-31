@@ -1,6 +1,7 @@
 Bernard message dispatcher for ProophServiceBus
 ==================================================
 
+[![Build Status](https://travis-ci.org/prooph/psb-bernard-dispatcher.svg?branch=master)](https://travis-ci.org/prooph/psb-bernard-dispatcher)
 
 Use [Bernard](http://bernardphp.com/en/latest/) as message dispatcher for [ProophServiceBus](https://github.com/prooph/service-bus).
 
