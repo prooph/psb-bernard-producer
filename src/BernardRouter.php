@@ -57,7 +57,7 @@ class BernardRouter implements Router
 
         if (! $message instanceof MessageInterface) throw new \InvalidArgumentException(sprintf(
             "Routing the message %s failed due to wrong message type",
-            $message->getName()
+            $envelope->getName()
         ));
 
         return array($this, "routeMessage");
