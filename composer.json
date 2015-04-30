@@ -18,11 +18,11 @@
         "bernard"
     ],
     "require": {
-        "php": ">=5.4",
+        "php": ">=5.5",
         "bernard/bernard": "~0.12"
     },
     "require-dev": {
-        "prooph/service-bus": "~1.3",
+        "prooph/service-bus": "dev-master",
         "phpunit/phpunit": "3.7.*",
         "doctrine/dbal" : "~2.4"
     },
