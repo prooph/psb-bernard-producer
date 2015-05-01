@@ -12,7 +12,7 @@
 namespace Prooph\ServiceBus\Message\Bernard;
 
 use Bernard\Message;
-use Prooph\ServiceBus\Message\StandardMessage;
+use Prooph\Common\Messaging\RemoteMessage;
 
 /**
  * Class BernardMessage
@@ -20,14 +20,40 @@ use Prooph\ServiceBus\Message\StandardMessage;
  * @package Prooph\ServiceBus\Message\Bernard
  * @author Alexander Miertsch <kontakt@codeliner.ws>
  */
-class BernardMessage extends StandardMessage implements Message
+class BernardMessage implements Message
 {
+    /**
+     * @var RemoteMessage
+     */
+    private $remoteMessage;
+
+    public static function fromRemoteMessage(RemoteMessage $remoteMessage) {
+        $instance = new self();
+        $instance->remoteMessage = $remoteMessage;
+        return $instance;
+    }
     /**
      * @return string
      */
     public function getName()
     {
-        return $this->name();
+        return $this->remoteMessage->name();
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return $this->remoteMessage->toArray();
+    }
+
+    /**
+     * @return RemoteMessage
+     */
+    public function getRemteMessage()
+    {
+        return $this->remoteMessage;
     }
 }
  

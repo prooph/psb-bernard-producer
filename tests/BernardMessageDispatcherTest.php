@@ -24,8 +24,9 @@ use Prooph\ServiceBus\InvokeStrategy\HandleCommandStrategy;
 use Prooph\ServiceBus\Message\Bernard\BernardRouter;
 use Prooph\ServiceBus\Message\Bernard\BernardSerializer;
 use Prooph\ServiceBus\Message\Bernard\MessageDispatcher;
-use Prooph\ServiceBus\Message\FromMessageTranslator;
-use Prooph\ServiceBus\Message\ToMessageTranslator;
+use Prooph\ServiceBus\Message\FromRemoteMessageTranslator;
+use Prooph\ServiceBus\Message\ProophDomainMessageToRemoteMessageTranslator;
+use Prooph\ServiceBus\Message\ToRemoteMessageTranslator;
 use Prooph\ServiceBus\Router\CommandRouter;
 use Prooph\ServiceBus\Router\EventRouter;
 use Prooph\ServiceBusTest\Mock\DoSomething;
@@ -53,11 +54,6 @@ class BernardMessageDispatcherTest extends TestCase
      */
     private $persistentFactory;
 
-    /**
-     * @var ToMessageTranslator
-     */
-    private $toMessageTranslator;
-
     protected function setUp()
     {
         $connection = DriverManager::getConnection(array(
@@ -78,7 +74,7 @@ class BernardMessageDispatcherTest extends TestCase
 
         $this->bernardProducer = new Producer($this->persistentFactory, new MiddlewareBuilder());
 
-        $this->toMessageTranslator = new ToMessageTranslator();
+        $this->toRemoteMessageTranslator = new ProophDomainMessageToRemoteMessageTranslator();
     }
 
     /**
@@ -93,17 +89,17 @@ class BernardMessageDispatcherTest extends TestCase
 
         //Normally you would send the command on a command bus. We skip this step here cause we are only
         //interested in the function of the message dispatcher
-        $messageDispatcher->dispatch($this->toMessageTranslator->translateToMessage($command));
+        $messageDispatcher->dispatch($command->toRemoteMessage());
 
         //Set up command bus which will receive the command message from the bernard consumer
         $consumerCommandBus = new CommandBus();
 
-        $consumerCommandBus->utilize(new FromMessageTranslator());
+        $consumerCommandBus->utilize(new FromRemoteMessageTranslator());
 
         $doSomethingHandler = new DoSomethingHandler();
 
         $consumerCommandBus->utilize(new CommandRouter([
-            $command->getMessageName() => $doSomethingHandler
+            $command->messageName() => $doSomethingHandler
         ]));
 
         $consumerCommandBus->utilize(new DoSomethingInvokeStrategy());
@@ -134,17 +130,17 @@ class BernardMessageDispatcherTest extends TestCase
 
         //Normally you would send the event on a event bus. We skip this step here cause we are only
         //interested in the function of the message dispatcher
-        $messageDispatcher->dispatch($this->toMessageTranslator->translateToMessage($event));
+        $messageDispatcher->dispatch($event->toRemoteMessage());
 
         //Set up event bus which will receive the event message from the bernard consumer
         $consumerEventBus = new EventBus();
 
-        $consumerEventBus->utilize(new FromMessageTranslator());
+        $consumerEventBus->utilize(new FromRemoteMessageTranslator());
 
         $somethingDoneListener = new SomethingDoneListener();
 
         $consumerEventBus->utilize(new EventRouter([
-            $event->getMessageName() => [$somethingDoneListener]
+            $event->messageName() => [$somethingDoneListener]
         ]));
 
         $consumerEventBus->utilize(new SomethingDoneInvokeStrategy());

@@ -13,7 +13,7 @@ namespace Prooph\ServiceBus\Message\Bernard;
 
 use Bernard\Envelope;
 use Bernard\Serializer;
-use Prooph\ServiceBus\Message\MessageInterface;
+use Prooph\Common\Messaging\RemoteMessage;
 
 /**
  * Class BernardSerializer
@@ -33,13 +33,13 @@ class BernardSerializer implements Serializer
     {
         $message = $envelope->getMessage();
 
-        if (! $message instanceof MessageInterface) throw new \InvalidArgumentException(sprintf(
+        if (! $message instanceof BernardMessage) throw new \InvalidArgumentException(sprintf(
             "Serialize message %s failed due to wrong message type",
             $message->getName()
         ));
 
         return json_encode(array(
-            'message'      => $envelope->getMessage()->toArray(),
+            'message'      => $message->toArray(),
             'timestamp' => $envelope->getTimestamp(),
         ));
     }
@@ -52,7 +52,7 @@ class BernardSerializer implements Serializer
     {
         $data = json_decode($serialized, true);
 
-        $envelope = new Envelope(BernardMessage::fromArray($data['message']));
+        $envelope = new Envelope(BernardMessage::fromRemoteMessage(RemoteMessage::fromArray($data['message'])));
 
         bernard_force_property_value($envelope, 'timestamp', $data['timestamp']);
 

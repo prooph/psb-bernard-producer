@@ -11,8 +11,8 @@
 namespace Prooph\ServiceBus\Message\Bernard;
 
 use Bernard\Producer;
-use Prooph\ServiceBus\Message\MessageDispatcherInterface;
-use Prooph\ServiceBus\Message\MessageInterface;
+use Prooph\Common\Messaging\RemoteMessage;
+use Prooph\ServiceBus\Message\RemoteMessageDispatcher;
 
 /**
  * Class MessageDispatcher
@@ -20,7 +20,7 @@ use Prooph\ServiceBus\Message\MessageInterface;
  * @package Prooph\ServiceBus\Message\Bernard
  * @author Alexander Miertsch <kontakt@codeliner.ws>
  */
-class MessageDispatcher implements MessageDispatcherInterface
+class MessageDispatcher implements RemoteMessageDispatcher
 {
     /**
      * @var Producer
@@ -43,10 +43,10 @@ class MessageDispatcher implements MessageDispatcherInterface
     }
 
     /**
-     * @param MessageInterface $message
+     * @param RemoteMessage $message
      * @return void
      */
-    public function dispatch(MessageInterface $message)
+    public function dispatch(RemoteMessage $message)
     {
         $this->bernardProducer->produce($this->toBernardMessage($message), $this->queue);
     }
@@ -63,14 +63,12 @@ class MessageDispatcher implements MessageDispatcherInterface
     }
 
     /**
-     * @param MessageInterface $message
+     * @param RemoteMessage $message
      * @return BernardMessage
      */
-    private function toBernardMessage(MessageInterface $message)
+    private function toBernardMessage(RemoteMessage $message)
     {
-        if ($message instanceof BernardMessage) return $message;
-
-        return BernardMessage::fromArray($message->toArray());
+        return BernardMessage::fromRemoteMessage($message);
     }
 }
  

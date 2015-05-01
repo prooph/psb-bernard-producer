@@ -13,10 +13,9 @@ namespace Prooph\ServiceBus\Message\Bernard;
 
 use Bernard\Envelope;
 use Bernard\Router;
+use Prooph\Common\Messaging\MessageHeader;
 use Prooph\ServiceBus\CommandBus;
 use Prooph\ServiceBus\EventBus;
-use Prooph\ServiceBus\Message\MessageHeader;
-use Prooph\ServiceBus\Message\MessageInterface;
 
 /**
  * Class BernardRouter
@@ -55,7 +54,7 @@ class BernardRouter implements Router
     {
         $message = $envelope->getMessage();
 
-        if (! $message instanceof MessageInterface) throw new \InvalidArgumentException(sprintf(
+        if (! $message instanceof BernardMessage) throw new \InvalidArgumentException(sprintf(
             "Routing the message %s failed due to wrong message type",
             $envelope->getName()
         ));
@@ -64,14 +63,16 @@ class BernardRouter implements Router
     }
 
     /**
-     * @param MessageInterface $message
+     * @param BernardMessage $message
      */
-    public function routeMessage(MessageInterface $message)
+    public function routeMessage(BernardMessage $message)
     {
-        if ($message->header()->type() === MessageHeader::TYPE_COMMAND) {
-            $this->commandBus->dispatch($message);
+        $remoteMessage = $message->getRemteMessage();
+
+        if ($remoteMessage->header()->type() === MessageHeader::TYPE_COMMAND) {
+            $this->commandBus->dispatch($remoteMessage);
         } else {
-            $this->eventBus->dispatch($message);
+            $this->eventBus->dispatch($remoteMessage);
         }
     }
 }
