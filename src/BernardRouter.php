@@ -67,7 +67,7 @@ class BernardRouter implements Router
      */
     public function routeMessage(BernardMessage $message)
     {
-        $remoteMessage = $message->getRemteMessage();
+        $remoteMessage = $message->getRemoteMessage();
 
         if ($remoteMessage->header()->type() === MessageHeader::TYPE_COMMAND) {
             $this->commandBus->dispatch($remoteMessage);
