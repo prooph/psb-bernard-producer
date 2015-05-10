@@ -51,7 +51,7 @@ class BernardMessage implements Message
     /**
      * @return RemoteMessage
      */
-    public function getRemteMessage()
+    public function getRemoteMessage()
     {
         return $this->remoteMessage;
     }
