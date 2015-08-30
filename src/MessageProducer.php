@@ -1,26 +1,25 @@
 <?php
 /*
- * This file is part of the codeliner/psb-bernard-dispatcher.
- * (c) Alexander Miertsch <kontakt@codeliner.ws>
+ * This file is part of the prooph/psb-bernard-dispatcher.
+ * (c) 2014 - 2015 prooph software GmbH <contact@prooph.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- * 
- * Date: 31.10.14 - 15:08
+ *
+ * Date: 10/31/14 - 03:08 PM
  */
 namespace Prooph\ServiceBus\Message\Bernard;
 
 use Bernard\Producer;
-use Prooph\Common\Messaging\RemoteMessage;
-use Prooph\ServiceBus\Message\RemoteMessageDispatcher;
+use Prooph\Common\Messaging\Message;
 
 /**
- * Class MessageDispatcher
+ * Class MessageProducer
  *
  * @package Prooph\ServiceBus\Message\Bernard
  * @author Alexander Miertsch <kontakt@codeliner.ws>
  */
-class MessageDispatcher implements RemoteMessageDispatcher
+class MessageProducer
 {
     /**
      * @var Producer
@@ -39,14 +38,15 @@ class MessageDispatcher implements RemoteMessageDispatcher
     public function __construct(Producer $bernardProducer, $queue = null)
     {
         $this->bernardProducer = $bernardProducer;
-        if (! is_null($queue)) $this->useQueue($queue);
+        if (! is_null($queue)) {
+            $this->useQueue($queue);
+        }
     }
 
     /**
-     * @param RemoteMessage $message
-     * @return void
+     * @param Message $message
      */
-    public function dispatch(RemoteMessage $message)
+    public function __invoke(Message $message)
     {
         $this->bernardProducer->produce($this->toBernardMessage($message), $this->queue);
     }
@@ -57,18 +57,19 @@ class MessageDispatcher implements RemoteMessageDispatcher
      */
     public function useQueue($name)
     {
-        if (! is_string($name)) throw new \InvalidArgumentException("Queue name is not a string!");
+        if (! is_string($name)) {
+            throw new \InvalidArgumentException("Queue name is not a string!");
+        }
 
         $this->queue = $name;
     }
 
     /**
-     * @param RemoteMessage $message
+     * @param Message $message
      * @return BernardMessage
      */
-    private function toBernardMessage(RemoteMessage $message)
+    private function toBernardMessage(Message $message)
     {
-        return BernardMessage::fromRemoteMessage($message);
+        return BernardMessage::fromProophMessage($message);
     }
 }
- 

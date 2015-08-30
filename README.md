@@ -1,25 +1,28 @@
-Bernard message dispatcher for ProophServiceBus
-==================================================
+Bernard Message Producer for Prooph Service Bus
+===============================================
 
-[![Build Status](https://travis-ci.org/prooph/psb-bernard-dispatcher.svg?branch=master)](https://travis-ci.org/prooph/psb-bernard-dispatcher)
+[![Build Status](https://travis-ci.org/prooph/psb-bernard-producer.svg)](https://travis-ci.org/prooph/psb-bernard-producer)
+[![Coverage Status](https://coveralls.io/repos/prooph/psb-bernard-producer/badge.svg?branch=master&service=github)](https://coveralls.io/github/prooph/psb-bernard-producer?branch=master)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/prooph/improoph)
 
-Use [Bernard](http://bernardphp.com/en/latest/) as message dispatcher for [ProophServiceBus](https://github.com/prooph/service-bus).
+Use [Bernard](https://github.com/bernardphp/bernard) as message producer for [Prooph Service Bus](https://github.com/prooph/service-bus).
 
 # Installation
 
-You can install the dispatcher via composer by adding `"prooph/psb-bernard-dispatcher": "~0.1"` as requirement to your composer.json.
+You can install the producer via composer by adding `"prooph/psb-bernard-producer": "~0.4"` as requirement to your composer.json.
 
 Usage
 -----
 
-Check the [BernardMessageDispatcherTest](tests/BernardMessageDispatcherTest.php). Set up the dispatcher is a straightforward task. Most of
+Check the [BernardMessageProducerTest](tests/BernardMessageProducerTest.php). Set up the producer is a straightforward task. Most of
 the required components are provided by PSB and Bernard. This package only provides the glue code needed to let both
 systems work together.
 
 # Support
 
 - Ask questions on [prooph-users](https://groups.google.com/forum/?hl=de#!forum/prooph) google group.
-- File issues at [https://github.com/prooph/psb-bernard-dispatcher/issues](https://github.com/prooph/psb-bernard-dispatcher/issues).
+- File issues at [https://github.com/prooph/psb-bernard-producer/issues](https://github.com/prooph/psb-bernard-producer/issues).
+- Say hello in the [prooph gitter](https://gitter.im/prooph/improoph) chat.
 
 # Contribute
 
@@ -29,4 +32,4 @@ To establish a consistent code quality, please provide unit tests for all your c
 License
 -------
 
-Released under the [New BSD License](https://github.com/prooph/psb-bernard-dispatcher/blob/master/LICENSE).
+Released under the [New BSD License](LICENSE).

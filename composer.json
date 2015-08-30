@@ -1,7 +1,7 @@
 {
-    "name": "prooph/psb-bernard-dispatcher",
-    "description": "Bernard message dispatcher for PSB",
-    "homepage": "https://github.com/prooph/psb-bernard-dispatcher",
+    "name": "prooph/psb-bernard-producer",
+    "description": "Bernard Message Producer for Prooph Service Bus",
+    "homepage": "https://github.com/prooph/psb-bernard-producer",
     "license": "BSD-3-Clause",
     "authors": [
         {
@@ -16,19 +16,21 @@
     ],
     "keywords": [
         "prooph",
-        "php",
-        "cqrs",
+        "CQRS",
         "messaging",
         "bernard"
     ],
     "require": {
         "php": ">=5.5",
+        "prooph/common": "^3.5",
         "bernard/bernard": "~0.12"
     },
     "require-dev": {
         "prooph/service-bus": "dev-master",
-        "phpunit/phpunit": "3.7.*",
-        "doctrine/dbal" : "~2.4"
+        "phpunit/phpunit": "~4.7",
+        "doctrine/dbal" : "~2.4",
+        "fabpot/php-cs-fixer": "1.7.*",
+        "satooshi/php-coveralls": "dev-master"
     },
     "autoload": {
         "psr-4": {
@@ -36,7 +38,7 @@
         }
     },
     "autoload-dev": {
-        "psr-0": {
+        "psr-4": {
             "Prooph\\ServiceBusTest\\": "vendor/prooph/service-bus/tests/"
         }
     }
