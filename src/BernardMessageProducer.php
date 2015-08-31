@@ -14,6 +14,7 @@ use Bernard\Producer;
 use Prooph\Common\Messaging\Message;
 use Prooph\ServiceBus\Async\MessageProducer;
 use Prooph\ServiceBus\Exception\InvalidArgumentException;
+use Prooph\ServiceBus\Exception\RuntimeException;
 use React\Promise\Deferred;
 
 /**
@@ -51,6 +52,9 @@ class BernardMessageProducer implements MessageProducer
      */
     public function __invoke(Message $message, Deferred $deferred = null)
     {
+        if (null !== $deferred) {
+            throw new RuntimeException(__CLASS__ . ' cannot handle query messages which require future responses.');
+        }
         $this->bernardProducer->produce($this->toBernardMessage($message), $this->queue);
     }
 
