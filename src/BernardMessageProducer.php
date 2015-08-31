@@ -41,7 +41,7 @@ class BernardMessageProducer implements MessageProducer
     public function __construct(Producer $bernardProducer, $queue = null)
     {
         $this->bernardProducer = $bernardProducer;
-        if (! is_null($queue)) {
+        if (null !== $queue) {
             $this->useQueue($queue);
         }
     }
