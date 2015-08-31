@@ -24,7 +24,7 @@ use Prooph\ServiceBus\CommandBus;
 use Prooph\ServiceBus\EventBus;
 use Prooph\ServiceBus\Message\Bernard\BernardRouter;
 use Prooph\ServiceBus\Message\Bernard\BernardSerializer;
-use Prooph\ServiceBus\Message\Bernard\MessageProducer;
+use Prooph\ServiceBus\Message\Bernard\BernardMessageProducer;
 use Prooph\ServiceBus\Plugin\Router\CommandRouter;
 use Prooph\ServiceBus\Plugin\Router\EventRouter;
 use Prooph\ServiceBusTest\Mock\DoSomething;
@@ -84,7 +84,7 @@ class BernardMessageProducerTest extends TestCase
         $command = new DoSomething(['data' => 'test command']);
 
         //The message dispatcher works with a ready-to-use bernard producer and one queue
-        $messageProducer = new MessageProducer($this->bernardProducer, 'test-queue');
+        $messageProducer = new BernardMessageProducer($this->bernardProducer, 'test-queue');
 
         //Normally you would send the command on a command bus. We skip this step here cause we are only
         //interested in the function of the message dispatcher
@@ -121,7 +121,7 @@ class BernardMessageProducerTest extends TestCase
         $event = new SomethingDone(['data' => 'test event']);
 
         //The message dispatcher works with a ready-to-use bernard producer and one queue
-        $messageProducer = new MessageProducer($this->bernardProducer, 'test-queue');
+        $messageProducer = new BernardMessageProducer($this->bernardProducer, 'test-queue');
 
         //Normally you would send the event on a event bus. We skip this step here cause we are only
         //interested in the function of the message dispatcher

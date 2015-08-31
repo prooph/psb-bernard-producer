@@ -12,14 +12,16 @@ namespace Prooph\ServiceBus\Message\Bernard;
 
 use Bernard\Producer;
 use Prooph\Common\Messaging\Message;
+use Prooph\ServiceBus\Async\MessageProducer;
+use React\Promise\Deferred;
 
 /**
- * Class MessageProducer
+ * Class BernardMessageProducer
  *
  * @package Prooph\ServiceBus\Message\Bernard
  * @author Alexander Miertsch <kontakt@codeliner.ws>
  */
-class MessageProducer
+class BernardMessageProducer implements MessageProducer
 {
     /**
      * @var Producer
@@ -44,9 +46,9 @@ class MessageProducer
     }
 
     /**
-     * @param Message $message
+     * @inheritdoc
      */
-    public function __invoke(Message $message)
+    public function __invoke(Message $message, Deferred $deferred = null)
     {
         $this->bernardProducer->produce($this->toBernardMessage($message), $this->queue);
     }
