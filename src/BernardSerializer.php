@@ -16,6 +16,7 @@ use Bernard\Serializer;
 use Prooph\Common\Messaging\MessageConverter;
 use Prooph\Common\Messaging\MessageDataAssertion;
 use Prooph\Common\Messaging\MessageFactory;
+use Prooph\ServiceBus\Exception\InvalidArgumentException;
 
 /**
  * Class BernardSerializer
@@ -47,7 +48,7 @@ class BernardSerializer implements Serializer
 
     /**
      * @param  Envelope $envelope
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      * @return string
      */
     public function serialize(Envelope $envelope)
@@ -55,7 +56,7 @@ class BernardSerializer implements Serializer
         $message = $envelope->getMessage();
 
         if (! $message instanceof BernardMessage) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
             "Serialize message %s failed due to wrong message type",
             $message->getName()
         ));

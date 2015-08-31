@@ -16,6 +16,7 @@ use Bernard\Router;
 use Prooph\Common\Messaging\Message;
 use Prooph\ServiceBus\CommandBus;
 use Prooph\ServiceBus\EventBus;
+use Prooph\ServiceBus\Exception\InvalidArgumentException;
 
 /**
  * Class BernardRouter
@@ -47,7 +48,7 @@ class BernardRouter implements Router
      * Returns the right Receiver (callable) based on the Envelope.
      *
      * @param  Envelope $envelope
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      * @return array
      */
     public function map(Envelope $envelope)
@@ -55,7 +56,7 @@ class BernardRouter implements Router
         $message = $envelope->getMessage();
 
         if (! $message instanceof BernardMessage) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
             "Routing the message %s failed due to wrong message type",
             $envelope->getName()
         ));

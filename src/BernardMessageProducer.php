@@ -13,6 +13,7 @@ namespace Prooph\ServiceBus\Message\Bernard;
 use Bernard\Producer;
 use Prooph\Common\Messaging\Message;
 use Prooph\ServiceBus\Async\MessageProducer;
+use Prooph\ServiceBus\Exception\InvalidArgumentException;
 use React\Promise\Deferred;
 
 /**
@@ -55,12 +56,12 @@ class BernardMessageProducer implements MessageProducer
 
     /**
      * @param string $name
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function useQueue($name)
     {
         if (! is_string($name)) {
-            throw new \InvalidArgumentException("Queue name is not a string!");
+            throw new InvalidArgumentException("Queue name is not a string!");
         }
 
         $this->queue = $name;
