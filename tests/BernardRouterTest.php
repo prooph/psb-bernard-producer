@@ -27,7 +27,7 @@ final class BernardRouterTest extends TestCase
     /**
      * @test
      */
-    function it_dispatches_a_command_on_the_command_bus()
+    public function it_dispatches_a_command_on_the_command_bus()
     {
         $proophMessage = $this->prophesize(Message::class);
 
@@ -49,7 +49,7 @@ final class BernardRouterTest extends TestCase
     /**
      * @test
      */
-    function it_dispatches_an_event_on_the_event_bus()
+    public function it_dispatches_an_event_on_the_event_bus()
     {
         $proophMessage = $this->prophesize(Message::class);
 
@@ -71,7 +71,7 @@ final class BernardRouterTest extends TestCase
     /**
      * @test
      */
-    function it_maps_envelope_to_route_message_method()
+    public function it_maps_envelope_to_route_message_method()
     {
         $bernardMessage = $this->prophesize(BernardMessage::class);
 
@@ -91,7 +91,7 @@ final class BernardRouterTest extends TestCase
      * @test
      * @expectedException \Prooph\ServiceBus\Exception\InvalidArgumentException
      */
-    function it_throws_exception_if_envelope_does_not_contain_a_prooph_message_wrapper()
+    public function it_throws_exception_if_envelope_does_not_contain_a_prooph_message_wrapper()
     {
         $nonProophMessage = $this->prophesize(\Bernard\Message::class);
 
@@ -105,4 +105,3 @@ final class BernardRouterTest extends TestCase
         $bernardRouter->map($envelope);
     }
 }
- 

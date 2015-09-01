@@ -84,7 +84,7 @@ class BernardMessageProducerTest extends TestCase
      * @test
      * @expectedException \Prooph\ServiceBus\Exception\InvalidArgumentException
      */
-    function it_does_not_allow_empty_queue_name()
+    public function it_does_not_allow_empty_queue_name()
     {
         new BernardMessageProducer($this->bernardProducer, '');
     }
@@ -93,7 +93,7 @@ class BernardMessageProducerTest extends TestCase
      * @test
      * @expectedException \Prooph\ServiceBus\Exception\InvalidArgumentException
      */
-    function it_does_not_allow_non_string_queue_name()
+    public function it_does_not_allow_non_string_queue_name()
     {
         new BernardMessageProducer($this->bernardProducer, 123);
     }
@@ -101,7 +101,7 @@ class BernardMessageProducerTest extends TestCase
     /**
      * @test
      */
-    function it_allows_null_as_queue()
+    public function it_allows_null_as_queue()
     {
         $bernardProducer = $this->prophesize(Producer::class);
         $bernardProducer->produce(Argument::type(BernardMessage::class), null)->shouldBeCalled();
@@ -190,7 +190,7 @@ class BernardMessageProducerTest extends TestCase
      * @test
      * @expectedException \Prooph\ServiceBus\Exception\RuntimeException
      */
-    function it_throws_runtime_exception_if_a_deferred_is_passed_to_invoke()
+    public function it_throws_runtime_exception_if_a_deferred_is_passed_to_invoke()
     {
         $event = new SomethingDone(['data' => 'test event']);
 

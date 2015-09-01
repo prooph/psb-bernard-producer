@@ -9,6 +9,7 @@
  * Date: 9/1/15 - 9:18 AM
  */
 namespace Prooph\ServiceBusTest;
+
 use Bernard\Envelope;
 use Prooph\Common\Messaging\FQCNMessageFactory;
 use Prooph\Common\Messaging\NoOpMessageConverter;
@@ -26,7 +27,7 @@ final class BernardSerializerTest extends TestCase
     /**
      * @test
      */
-    function it_serializes_and_deserializes_a_message()
+    public function it_serializes_and_deserializes_a_message()
     {
         $doSomethingCommand = new DoSomething(['data' => 'some test data']);
 
@@ -53,7 +54,7 @@ final class BernardSerializerTest extends TestCase
      * @test
      * @expectedException \Prooph\ServiceBus\Exception\InvalidArgumentException
      */
-    function it_throws_exception_if_envelope_does_not_contain_a_prooph_message_wrapper()
+    public function it_throws_exception_if_envelope_does_not_contain_a_prooph_message_wrapper()
     {
         $nonProophMessage = $this->prophesize(\Bernard\Message::class);
 
@@ -64,4 +65,3 @@ final class BernardSerializerTest extends TestCase
         $bernardSerializer->serialize($envelope);
     }
 }
- 

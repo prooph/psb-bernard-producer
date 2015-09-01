@@ -23,7 +23,7 @@ final class BernardMessageTest extends TestCase
     /**
      * @test
      */
-    function it_wraps_a_prooph_message()
+    public function it_wraps_a_prooph_message()
     {
         $proophMessage = $this->prophesize(Message::class);
 
@@ -35,4 +35,3 @@ final class BernardMessageTest extends TestCase
         $this->assertSame($proophMessage->reveal(), $bernardMessage->getProophMessage());
     }
 }
- 
