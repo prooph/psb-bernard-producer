@@ -1,19 +1,22 @@
 <?php
 /*
- * This file is part of the codeliner/psb-bernard-dispatcher.
- * (c) Alexander Miertsch <kontakt@codeliner.ws>
+ * This file is part of the prooph/psb-bernard-producer.
+ * (c) 2014 - 2015 prooph software GmbH <contact@prooph.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- * 
- * Date: 31.10.14 - 15:23
+ *
+ * Date: 10/31/14 - 03:08 PM
  */
 
 namespace Prooph\ServiceBus\Message\Bernard;
 
 use Bernard\Envelope;
 use Bernard\Serializer;
-use Prooph\Common\Messaging\RemoteMessage;
+use Prooph\Common\Messaging\MessageConverter;
+use Prooph\Common\Messaging\MessageDataAssertion;
+use Prooph\Common\Messaging\MessageFactory;
+use Prooph\ServiceBus\Exception\InvalidArgumentException;
 
 /**
  * Class BernardSerializer
@@ -23,25 +26,52 @@ use Prooph\Common\Messaging\RemoteMessage;
  */
 class BernardSerializer implements Serializer
 {
+    /**
+     * @var MessageFactory
+     */
+    private $messageFactory;
+
+    /**
+     * @var MessageConverter
+     */
+    private $messageConverter;
+
+    /**
+     * @param MessageFactory $messageFactory
+     * @param MessageConverter $messageConverter
+     */
+    public function __construct(MessageFactory $messageFactory, MessageConverter $messageConverter)
+    {
+        $this->messageFactory = $messageFactory;
+        $this->messageConverter = $messageConverter;
+    }
 
     /**
      * @param  Envelope $envelope
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      * @return string
      */
     public function serialize(Envelope $envelope)
     {
         $message = $envelope->getMessage();
 
-        if (! $message instanceof BernardMessage) throw new \InvalidArgumentException(sprintf(
+        if (! $message instanceof BernardMessage) {
+            throw new InvalidArgumentException(sprintf(
             "Serialize message %s failed due to wrong message type",
             $message->getName()
         ));
+        }
 
-        return json_encode(array(
-            'message'      => $message->toArray(),
+        $messageData = $this->messageConverter->convertToArray($message->getProophMessage());
+
+        MessageDataAssertion::assert($messageData);
+
+        $messageData['created_at'] = $message->getProophMessage()->createdAt()->format('Y-m-d\TH:i:s.u');
+
+        return json_encode([
+            'message'      => $messageData,
             'timestamp' => $envelope->getTimestamp(),
-        ));
+        ]);
     }
 
     /**
@@ -52,11 +82,20 @@ class BernardSerializer implements Serializer
     {
         $data = json_decode($serialized, true);
 
-        $envelope = new Envelope(BernardMessage::fromRemoteMessage(RemoteMessage::fromArray($data['message'])));
+        $messageData = $data['message'];
+
+        $messageData['created_at'] = \DateTimeImmutable::createFromFormat(
+            'Y-m-d\TH:i:s.u',
+            $messageData['created_at'],
+            new \DateTimeZone('UTC')
+        );
+
+        $proophMessage = $this->messageFactory->createMessageFromArray($messageData['message_name'], $messageData);
+
+        $envelope = new Envelope(BernardMessage::fromProophMessage($proophMessage));
 
         bernard_force_property_value($envelope, 'timestamp', $data['timestamp']);
 
         return $envelope;
     }
 }
- 

@@ -1,21 +1,22 @@
 <?php
 /*
- * This file is part of the codeliner/psb-bernard-dispatcher.
- * (c) Alexander Miertsch <kontakt@codeliner.ws>
+ * This file is part of the prooph/psb-bernard-producer.
+ * (c) 2014 - 2015 prooph software GmbH <contact@prooph.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- * 
- * Date: 31.10.14 - 15:34
+ *
+ * Date: 10/31/14 - 03:08 PM
  */
 
 namespace Prooph\ServiceBus\Message\Bernard;
 
 use Bernard\Envelope;
 use Bernard\Router;
-use Prooph\Common\Messaging\MessageHeader;
+use Prooph\Common\Messaging\Message;
 use Prooph\ServiceBus\CommandBus;
 use Prooph\ServiceBus\EventBus;
+use Prooph\ServiceBus\Exception\InvalidArgumentException;
 
 /**
  * Class BernardRouter
@@ -47,19 +48,21 @@ class BernardRouter implements Router
      * Returns the right Receiver (callable) based on the Envelope.
      *
      * @param  Envelope $envelope
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      * @return array
      */
     public function map(Envelope $envelope)
     {
         $message = $envelope->getMessage();
 
-        if (! $message instanceof BernardMessage) throw new \InvalidArgumentException(sprintf(
+        if (! $message instanceof BernardMessage) {
+            throw new InvalidArgumentException(sprintf(
             "Routing the message %s failed due to wrong message type",
             $envelope->getName()
         ));
+        }
 
-        return array($this, "routeMessage");
+        return [$this, "routeMessage"];
     }
 
     /**
@@ -67,13 +70,12 @@ class BernardRouter implements Router
      */
     public function routeMessage(BernardMessage $message)
     {
-        $remoteMessage = $message->getRemoteMessage();
+        $proophMessage = $message->getProophMessage();
 
-        if ($remoteMessage->header()->type() === MessageHeader::TYPE_COMMAND) {
-            $this->commandBus->dispatch($remoteMessage);
+        if ($proophMessage->messageType() === Message::TYPE_COMMAND) {
+            $this->commandBus->dispatch($proophMessage);
         } else {
-            $this->eventBus->dispatch($remoteMessage);
+            $this->eventBus->dispatch($proophMessage);
         }
     }
 }
- 
