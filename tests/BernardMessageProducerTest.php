@@ -33,6 +33,7 @@ use Prooph\ServiceBusTest\Mock\DoSomething;
 use Prooph\ServiceBusTest\Mock\MessageHandler;
 use Prooph\ServiceBusTest\Mock\SomethingDone;
 use Prophecy\Argument;
+use React\Promise\Deferred;
 
 /**
  * Class BernardMessageProducerTest
@@ -183,5 +184,21 @@ class BernardMessageProducerTest extends TestCase
         $this->assertNotNull($somethingDoneListener->getLastMessage());
 
         $this->assertEquals($event->payload(), $somethingDoneListener->getLastMessage()->payload());
+    }
+
+    /**
+     * @test
+     * @expectedException \Prooph\ServiceBus\Exception\RuntimeException
+     */
+    function it_throws_runtime_exception_if_a_deferred_is_passed_to_invoke()
+    {
+        $event = new SomethingDone(['data' => 'test event']);
+
+        //The message dispatcher works with a ready-to-use bernard producer and one queue
+        $messageProducer = new BernardMessageProducer($this->bernardProducer, 'test-queue');
+
+        $deferred = $this->prophesize(Deferred::class);
+
+        $messageProducer($event, $deferred->reveal());
     }
 }
