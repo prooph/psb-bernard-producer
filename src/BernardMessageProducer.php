@@ -64,8 +64,8 @@ class BernardMessageProducer implements MessageProducer
      */
     public function useQueue($name)
     {
-        if (! is_string($name)) {
-            throw new InvalidArgumentException("Queue name is not a string!");
+        if (! is_string($name) || $name === '') {
+            throw new InvalidArgumentException("Queue name must be a non empty string!");
         }
 
         $this->queue = $name;

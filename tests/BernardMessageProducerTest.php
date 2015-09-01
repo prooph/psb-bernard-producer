@@ -19,9 +19,11 @@ use Bernard\QueueFactory\PersistentFactory;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Schema\Schema;
 use Prooph\Common\Messaging\FQCNMessageFactory;
+use Prooph\Common\Messaging\Message;
 use Prooph\Common\Messaging\NoOpMessageConverter;
 use Prooph\ServiceBus\CommandBus;
 use Prooph\ServiceBus\EventBus;
+use Prooph\ServiceBus\Message\Bernard\BernardMessage;
 use Prooph\ServiceBus\Message\Bernard\BernardRouter;
 use Prooph\ServiceBus\Message\Bernard\BernardSerializer;
 use Prooph\ServiceBus\Message\Bernard\BernardMessageProducer;
@@ -30,6 +32,7 @@ use Prooph\ServiceBus\Plugin\Router\EventRouter;
 use Prooph\ServiceBusTest\Mock\DoSomething;
 use Prooph\ServiceBusTest\Mock\MessageHandler;
 use Prooph\ServiceBusTest\Mock\SomethingDone;
+use Prophecy\Argument;
 
 /**
  * Class BernardMessageProducerTest
@@ -78,6 +81,38 @@ class BernardMessageProducerTest extends TestCase
 
     /**
      * @test
+     * @expectedException \Prooph\ServiceBus\Exception\InvalidArgumentException
+     */
+    function it_does_not_allow_empty_queue_name()
+    {
+        new BernardMessageProducer($this->bernardProducer, '');
+    }
+
+    /**
+     * @test
+     * @expectedException \Prooph\ServiceBus\Exception\InvalidArgumentException
+     */
+    function it_does_not_allow_non_string_queue_name()
+    {
+        new BernardMessageProducer($this->bernardProducer, 123);
+    }
+
+    /**
+     * @test
+     */
+    function it_allows_null_as_queue()
+    {
+        $bernardProducer = $this->prophesize(Producer::class);
+        $bernardProducer->produce(Argument::type(BernardMessage::class), null)->shouldBeCalled();
+        $proophBernardProducer = new BernardMessageProducer($bernardProducer->reveal());
+
+        $message = $this->prophesize(Message::class);
+
+        $proophBernardProducer($message->reveal());
+    }
+
+    /**
+     * @test
      */
     public function it_sends_a_command_to_queue_pulls_it_with_consumer_and_forwards_it_to_command_bus()
     {
@@ -116,7 +151,7 @@ class BernardMessageProducerTest extends TestCase
     /**
      * @test
      */
-    public function it_sends_a_event_to_queue_pulls_it_with_consumer_and_forwards_it_to_event_bus()
+    public function it_sends_an_event_to_queue_pulls_it_with_consumer_and_forwards_it_to_event_bus()
     {
         $event = new SomethingDone(['data' => 'test event']);
 
