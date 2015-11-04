@@ -1,7 +1,7 @@
 {
     "name": "prooph/psb-bernard-producer",
     "description": "Bernard Message Producer for Prooph Service Bus",
-    "homepage": "https://github.com/prooph/psb-bernard-producer",
+    "homepage": "http://getprooph.org/",
     "license": "BSD-3-Clause",
     "authors": [
         {
