@@ -8,7 +8,7 @@
  *
  * Date: 10/31/14 - 03:08 PM
  */
-namespace Prooph\ServiceBusTest;
+namespace ProophTest\ServiceBus;
 
 use Bernard\Consumer;
 use Bernard\Doctrine\MessagesSchema;
@@ -29,9 +29,9 @@ use Prooph\ServiceBus\Message\Bernard\BernardSerializer;
 use Prooph\ServiceBus\Message\Bernard\BernardMessageProducer;
 use Prooph\ServiceBus\Plugin\Router\CommandRouter;
 use Prooph\ServiceBus\Plugin\Router\EventRouter;
-use Prooph\ServiceBusTest\Mock\DoSomething;
-use Prooph\ServiceBusTest\Mock\MessageHandler;
-use Prooph\ServiceBusTest\Mock\SomethingDone;
+use ProophTest\ServiceBus\Mock\DoSomething;
+use ProophTest\ServiceBus\Mock\MessageHandler;
+use ProophTest\ServiceBus\Mock\SomethingDone;
 use Prophecy\Argument;
 use React\Promise\Deferred;
 

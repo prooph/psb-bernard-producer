@@ -8,7 +8,7 @@
  *
  * Date: 9/1/15 - 8:51 AM
  */
-namespace Prooph\ServiceBusTest;
+namespace ProophTest\ServiceBus;
 
 use Prooph\Common\Messaging\Message;
 use Prooph\ServiceBus\Message\Bernard\BernardMessage;

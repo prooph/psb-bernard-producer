@@ -8,14 +8,14 @@
  *
  * Date: 9/1/15 - 9:18 AM
  */
-namespace Prooph\ServiceBusTest;
+namespace ProophTest\ServiceBus;
 
 use Bernard\Envelope;
 use Prooph\Common\Messaging\FQCNMessageFactory;
 use Prooph\Common\Messaging\NoOpMessageConverter;
 use Prooph\ServiceBus\Message\Bernard\BernardMessage;
 use Prooph\ServiceBus\Message\Bernard\BernardSerializer;
-use Prooph\ServiceBusTest\Mock\DoSomething;
+use ProophTest\ServiceBus\Mock\DoSomething;
 
 /**
  * Class BernardSerializerTest
