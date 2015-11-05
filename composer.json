@@ -39,7 +39,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Prooph\\ServiceBusTest\\": "vendor/prooph/service-bus/tests/"
+            "ProophTest\\ServiceBus\\": "vendor/prooph/service-bus/tests/"
         }
     }
 }

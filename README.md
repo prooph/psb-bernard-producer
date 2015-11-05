@@ -9,7 +9,7 @@ Use [Bernard](https://github.com/bernardphp/bernard) as message producer for [Pr
 
 # Installation
 
-You can install the producer via composer by adding `"prooph/psb-bernard-producer": "~0.4"` as requirement to your composer.json.
+You can install the producer via composer by adding `"prooph/psb-bernard-producer": "^1.0"` as requirement to your composer.json.
 
 Usage
 -----
