@@ -20,6 +20,9 @@
         "messaging",
         "bernard"
     ],
+    "conflict": {
+        "prooph/psb-bernard-dispatcher": "*"
+    }
     "require": {
         "php": "~5.5|~7.0",
         "prooph/common": "^3.5",
