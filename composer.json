@@ -26,7 +26,7 @@
     "require": {
         "php": "~5.5|~7.0",
         "prooph/common": "^3.5",
-        "bernard/bernard": "~0.12"
+        "bernard/bernard": "1.0.*@dev"
     },
     "require-dev": {
         "prooph/service-bus": "dev-master",
