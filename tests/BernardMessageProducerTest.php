@@ -13,7 +13,6 @@ namespace ProophTest\ServiceBus;
 use Bernard\Consumer;
 use Bernard\Doctrine\MessagesSchema;
 use Bernard\Driver\DoctrineDriver;
-use Bernard\Middleware\MiddlewareBuilder;
 use Bernard\Producer;
 use Bernard\QueueFactory\PersistentFactory;
 use Doctrine\DBAL\DriverManager;
@@ -34,6 +33,8 @@ use ProophTest\ServiceBus\Mock\MessageHandler;
 use ProophTest\ServiceBus\Mock\SomethingDone;
 use Prophecy\Argument;
 use React\Promise\Deferred;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+
 
 /**
  * Class BernardMessageProducerTest
@@ -77,7 +78,7 @@ class BernardMessageProducerTest extends TestCase
             )
         );
 
-        $this->bernardProducer = new Producer($this->persistentFactory, new MiddlewareBuilder());
+        $this->bernardProducer = new Producer($this->persistentFactory, new EventDispatcher());
     }
 
     /**
@@ -139,7 +140,7 @@ class BernardMessageProducerTest extends TestCase
         //Prooph\ServiceBus\Message\MessageHeader::TYPE
         $bernardRouter = new BernardRouter($consumerCommandBus, new EventBus());
 
-        $bernardConsumer = new Consumer($bernardRouter, new MiddlewareBuilder());
+        $bernardConsumer = new Consumer($bernardRouter, new EventDispatcher());
 
         //We use the same queue name here as we've defined for the message dispatcher above
         $bernardConsumer->tick($this->persistentFactory->create('test-queue'));
@@ -176,7 +177,7 @@ class BernardMessageProducerTest extends TestCase
         //Prooph\ServiceBus\Message\MessageHeader::TYPE
         $bernardRouter = new BernardRouter(new CommandBus(), $consumerEventBus);
 
-        $bernardConsumer = new Consumer($bernardRouter, new MiddlewareBuilder());
+        $bernardConsumer = new Consumer($bernardRouter, new EventDispatcher());
 
         //We use the same queue name here as we've defined for the message dispatcher above
         $bernardConsumer->tick($this->persistentFactory->create('test-queue'));

@@ -27,7 +27,7 @@ final class BernardSerializerTest extends TestCase
     /**
      * @test
      */
-    public function it_serializes_and_deserializes_a_message()
+    public function it_serializes_and_unserializes_a_message()
     {
         $doSomethingCommand = new DoSomething(['data' => 'some test data']);
 
@@ -35,18 +35,16 @@ final class BernardSerializerTest extends TestCase
 
         $envelope = new Envelope($bernardMessage);
 
-        bernard_force_property_value($envelope, 'timestamp', 1);
-
         $bernardSerializer = new BernardSerializer(new FQCNMessageFactory(), new NoOpMessageConverter());
 
         $serializedEnvelope = $bernardSerializer->serialize($envelope);
 
-        $deserializedEnvelope = $bernardSerializer->deserialize($serializedEnvelope);
+        $unserializedEnvelope = $bernardSerializer->unserialize($serializedEnvelope);
 
-        $this->assertEquals($envelope->getTimestamp(), $deserializedEnvelope->getTimestamp());
+        $this->assertEquals($envelope->getTimestamp(), $unserializedEnvelope->getTimestamp());
         $this->assertEquals(
             $envelope->getMessage()->getProophMessage()->toArray(),
-            $deserializedEnvelope->getMessage()->getProophMessage()->toArray()
+            $unserializedEnvelope->getMessage()->getProophMessage()->toArray()
         );
     }
 
