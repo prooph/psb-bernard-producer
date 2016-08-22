@@ -24,7 +24,7 @@ use Prooph\ServiceBus\Exception\InvalidArgumentException;
  * @package Prooph\ServiceBus\Message\Bernard
  * @author Alexander Miertsch <kontakt@codeliner.ws>
  */
-class BernardSerializer implements Serializer
+class BernardSerializer extends Serializer
 {
     /**
      * @var MessageFactory
@@ -42,8 +42,10 @@ class BernardSerializer implements Serializer
      */
     public function __construct(MessageFactory $messageFactory, MessageConverter $messageConverter)
     {
+        parent::__construct();
         $this->messageFactory = $messageFactory;
         $this->messageConverter = $messageConverter;
+        
     }
 
     /**
@@ -78,7 +80,7 @@ class BernardSerializer implements Serializer
      * @param $serialized
      * @return Envelope
      */
-    public function deserialize($serialized)
+    public function unserialize($serialized)
     {
         $data = json_decode($serialized, true);
 
@@ -93,8 +95,6 @@ class BernardSerializer implements Serializer
         $proophMessage = $this->messageFactory->createMessageFromArray($messageData['message_name'], $messageData);
 
         $envelope = new Envelope(BernardMessage::fromProophMessage($proophMessage));
-
-        bernard_force_property_value($envelope, 'timestamp', $data['timestamp']);
 
         return $envelope;
     }
