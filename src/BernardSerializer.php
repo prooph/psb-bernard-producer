@@ -45,7 +45,6 @@ class BernardSerializer extends Serializer
         parent::__construct();
         $this->messageFactory = $messageFactory;
         $this->messageConverter = $messageConverter;
-        
     }
 
     /**
