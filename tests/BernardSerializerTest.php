@@ -35,9 +35,6 @@ final class BernardSerializerTest extends TestCase
 
         $envelope = new Envelope($bernardMessage);
 
-//        bernard_force_property_value($envelope, 'timestamp', 1);
-
-
         $bernardSerializer = new BernardSerializer(new FQCNMessageFactory(), new NoOpMessageConverter());
 
         $serializedEnvelope = $bernardSerializer->serialize($envelope);
