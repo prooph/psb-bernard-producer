@@ -28,7 +28,7 @@
         "prooph/psb-bernard-dispatcher": "*"
     },
     "require": {
-        "php": "~5.5|~7.0",
+        "php": "~7.1",
         "prooph/common": "^4.1",
         "bernard/bernard": "1.0.*@dev"
     },
