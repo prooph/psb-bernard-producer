@@ -30,7 +30,8 @@
     "require": {
         "php": "~7.1",
         "prooph/common": "^4.1",
-        "bernard/bernard": "1.0.*@dev"
+        "bernard/bernard": "1.0.*@dev",
+        "react/promise": "^2.7"
     },
     "require-dev": {
         "prooph/service-bus": "dev-master",
