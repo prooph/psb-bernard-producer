@@ -34,7 +34,7 @@ use ProophTest\ServiceBus\Mock\SomethingDone;
 use Prophecy\Argument;
 use React\Promise\Deferred;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class BernardMessageProducerTest
@@ -132,9 +132,13 @@ class BernardMessageProducerTest extends TestCase
 
         $doSomethingHandler = new MessageHandler();
 
-        $consumerCommandBus->utilize(new CommandRouter([
+        $router = new CommandRouter([
             $command->messageName() => $doSomethingHandler
-        ]));
+        ]);
+
+        $router->attachToMessageBus($consumerCommandBus);
+
+        $consumerCommandBus->dispatch($command);
 
         //We use a special bernard router which forwards all messages to a command bus or event bus depending on the
         //Prooph\ServiceBus\Message\MessageHeader::TYPE
@@ -169,9 +173,11 @@ class BernardMessageProducerTest extends TestCase
 
         $somethingDoneListener = new MessageHandler();
 
-        $consumerEventBus->utilize(new EventRouter([
+        $router = new EventRouter([
             $event->messageName() => [$somethingDoneListener]
-        ]));
+        ]);
+
+        $router->attachToMessageBus($consumerEventBus);
 
         //We use a special bernard router which forwards all messages to a command bus or event bus depending on the
         //Prooph\ServiceBus\Message\MessageHeader::TYPE
