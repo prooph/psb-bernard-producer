@@ -28,16 +28,17 @@
         "prooph/psb-bernard-dispatcher": "*"
     },
     "require": {
-        "php": "~5.5|~7.0",
-        "prooph/common": "^3.5",
-        "bernard/bernard": "1.0.*@dev"
+        "php": "~7.1",
+        "prooph/common": "^4.1",
+        "bernard/bernard": "1.0.*@dev",
+        "react/promise": "^2.7"
     },
     "require-dev": {
         "prooph/service-bus": "dev-master",
         "phpunit/phpunit": "~4.7",
         "doctrine/dbal" : "~2.4",
         "fabpot/php-cs-fixer": "1.7.*",
-        "satooshi/php-coveralls": "dev-master"
+        "php-coveralls/php-coveralls": "~1.1"
     },
     "autoload": {
         "psr-4": {

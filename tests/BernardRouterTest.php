@@ -16,6 +16,7 @@ use Prooph\ServiceBus\CommandBus;
 use Prooph\ServiceBus\EventBus;
 use Prooph\ServiceBus\Message\Bernard\BernardMessage;
 use Prooph\ServiceBus\Message\Bernard\BernardRouter;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class BernardRouterTest

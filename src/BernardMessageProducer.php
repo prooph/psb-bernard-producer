@@ -50,7 +50,7 @@ class BernardMessageProducer implements MessageProducer
     /**
      * @inheritdoc
      */
-    public function __invoke(Message $message, Deferred $deferred = null)
+    public function __invoke(Message $message, Deferred $deferred = null) : void
     {
         if (null !== $deferred) {
             throw new RuntimeException(__CLASS__ . ' cannot handle query messages which require future responses.');

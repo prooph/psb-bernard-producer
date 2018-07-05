@@ -16,6 +16,7 @@ use Prooph\Common\Messaging\NoOpMessageConverter;
 use Prooph\ServiceBus\Message\Bernard\BernardMessage;
 use Prooph\ServiceBus\Message\Bernard\BernardSerializer;
 use ProophTest\ServiceBus\Mock\DoSomething;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class BernardSerializerTest
